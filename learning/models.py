@@ -1,9 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, create_engine
-from sqlalchemy.ext.declarative import declarative_base 
-from sqlalchemy.orm import relationship, sessionmaker
-from app import app
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
+from learning import Base
 
-Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'user'
@@ -12,9 +10,10 @@ class User(Base):
     lname = Column(String(255))
     userid = Column(String(10))
     password = Column(String(255))
-    topics = relationship('topic')
-    votes = relationship('vote')
-    posts = relationship('post')
+    topics = relationship('Topic')
+    votes = relationship('Vote')
+    posts = relationship('Post')
+
 
 class Topic(Base):
     __tablename__ = 'topic'
@@ -22,9 +21,10 @@ class Topic(Base):
     topic = Column(String(255), unique=True)
     description = Column(String)
     createdby = Column(Integer, ForeignKey('user.id'))
-    votes = relationship('vote')
-    posts = relationship('post')
+    votes = relationship('Vote')
+    posts = relationship('Post')
     complete = Column(Integer)
+
 
 class Vote(Base):
     __tablename__ = 'vote'
@@ -33,6 +33,7 @@ class Vote(Base):
     voteup = Column(Integer)
     votedown = Column(Integer)
     voter = Column(Integer, ForeignKey('user.id'))
+
 
 class Post(Base):
     __tablename__ = 'post'
@@ -44,9 +45,3 @@ class Post(Base):
     author = Column(Integer, ForeignKey('user.id'))
     parent = Column(Integer)
     topic = Column(Integer, ForeignKey('topic.id'))
-
-engine = create_engine(app.config['DATABASE_URI'])
-Base.metadata.create_all(engine)
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
