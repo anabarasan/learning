@@ -19,14 +19,19 @@ def login():
     if request.method == 'POST' and request.form.get('userid') and request.form.get('password'):
         userid = request.form.get('userid')
         password = request.form.get('password')
-        if password == app.config['ADMIN_PASSWORD']:
-            session['logged_in'] = True
-            session['userid'] = 1  # TODO :: fetch & store user object
-            session.permanent = True  # use Cookie to store session.
-            flash('You are now logged in.', 'success')
-            return redirect(next_url or url_for('index'))
-        else:
-            flash('Incorrect password.', 'danger')
+        db = DBSession(engine)
+        user_details = db.get('User', {'userid' : userid})
+        if user_details:
+            if password == user_details.password:
+                session['logged_in'] = True
+                session['userid'] = user_details.id
+                session.permanent = False  # use Cookie to store session. (or not!?)
+                flash('You are now logged in.', 'success')
+                return redirect(next_url or url_for('index'))
+            else:
+                flash('Incorrect password.', 'danger')
+    else:
+        flash('Incorrect UserId or Password.', 'danger')
     return render_template('login.html', next_url=next_url)
 
 
@@ -53,7 +58,8 @@ def newTopic():
             db = DBSession(engine)
             fields = {
                 'topic': request.form.get('topic'),
-                'description': request.form.get('description')
+                'description': request.form.get('description'),
+                'createdby': session.get('userid')
             }
             db.create_or_update('Topic', fields)
             db.save()
