@@ -1,4 +1,4 @@
-from learning import app, engine
+from moderator import app, engine
 from flask import render_template, session, redirect, url_for, request, flash
 from DBSession import DBSession
 import functools
