@@ -21,7 +21,7 @@ def login():
         password = request.form.get('password')
         if password == app.config['ADMIN_PASSWORD']:
             session['logged_in'] = True
-            session['userid'] = 1 # TODO :: fetch & store user object
+            session['userid'] = 1  # TODO :: fetch & store user object
             session.permanent = True  # use Cookie to store session.
             flash('You are now logged in.', 'success')
             return redirect(next_url or url_for('index'))
@@ -65,11 +65,11 @@ def newTopic():
 @login_required
 def vote(topic_id, user_vote):
     db = DBSession(engine)
-    vote = db.getMulti('Vote', {'topic':topic_id, 'voter':session.get('userid')})
+    vote = db.getMulti('Vote', {'topic': topic_id, 'voter': session.get('userid')})
     if len(vote):
         vote = dict((col, getattr(vote[0], col)) for col in vote[0].__table__.columns.keys())
     else:
-        vote = {'topic':topic_id, 'voter':session.get('userid')}
+        vote = {'topic': topic_id, 'voter': session.get('userid')}
     if user_vote == 'voteup':
         vote['voteup'] = 1
         vote['votedown'] = 0
