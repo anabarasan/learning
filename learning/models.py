@@ -23,15 +23,15 @@ class Topic(Base):
     createdby = Column(Integer, ForeignKey('user.id'))
     votes = relationship('Vote')
     posts = relationship('Post')
-    complete = Column(Integer)
+    complete = Column(Integer, default=0)
 
 
 class Vote(Base):
     __tablename__ = 'vote'
     id = Column(Integer, primary_key=True)
     topic = Column(Integer, ForeignKey('topic.id'))
-    voteup = Column(Integer)
-    votedown = Column(Integer)
+    voteup = Column(Integer, default=0)
+    votedown = Column(Integer, default=0)
     voter = Column(Integer, ForeignKey('user.id'))
 
 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Moderator - New Topic{% endblock %}
+
+{% block content_title %}New Topic{% endblock %}
+
+{% block content %}
+	<form method="post" class="form">
+		<div class ="row">
+			<label for="topic" class="control-label">
+				Topic
+			</label>
+			<input type="text" class="form-control" id="topic" name="topic" />
+		</div>
+		<div class ="row">
+			<label for="description" class="control-label">
+				Description
+			</label>
+			<textarea class="form-control" id="description" name="description"></textarea>
+		</div>
+		<div class="row">
+			<div style="margin-top:10px; text-align:right;">
+				<input type="submit" class="btn btn-primary" value="Submit"/>
+				<input type="reset" class="btn btn-default" value="Clear"/>
+			</div>
+		</div>
+	</form>
+{% endblock %}
