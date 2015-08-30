@@ -20,7 +20,7 @@ def login():
         userid = request.form.get('userid')
         password = request.form.get('password')
         db = DBSession(engine)
-        user_details = db.get('User', {'userid' : userid})
+        user_details = db.get('User', {'userid': userid})
         if user_details:
             if password == user_details['password']:
                 session['logged_in'] = True
@@ -50,7 +50,7 @@ def index():
     for topic in topics:
         topic['voteup'] = 0
         topic['votedown'] = 0
-        votes = db.getMulti('Vote', {'topic' : topic['id']})
+        votes = db.getMulti('Vote', {'topic': topic['id']})
         for vote in votes:
             topic['voteup'] += vote['voteup']
             topic['votedown'] += vote['votedown']
