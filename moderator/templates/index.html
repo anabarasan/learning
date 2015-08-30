@@ -8,13 +8,24 @@ content %}
 	{% for topic in topics %}
 	<div class="row"
 		style="margin-top: 10px; border-top: 1px solid #e6e6e6; padding-top: 5px;">
-		<span>{{ topic.topic }}</span> 
-		<span style="margin-left: 10px; cursor: pointer;"
-			class="vote glyphicon glyphicon-thumbs-up"
-			data-topic="{{ topic.id }}" data-action="voteup"></span> 
-		<span style="margin-left: 10px; cursor: pointer"
-			class="vote glyphicon glyphicon-thumbs-down"
-			data-topic="{{ topic.id}}" data-action="votedown"></span>
+		<span>{{ topic.topic }}</span>
+		{% if session.logged_in %}
+			<form method="post" action="/vote/{{ topic.id }}/voteup" style="display:inline-block;">
+				<span style="margin-left: 10px; cursor: pointer;"
+					class="vote glyphicon glyphicon-thumbs-up"
+					data-topic="{{ topic.id }}" data-action="voteup">
+					<span>{{ topic.voteup }}</span>
+				</span>
+			</form>
+			<form method="post" action="/vote/{{ topic.id }}/votedown" style="display:inline-block;">
+				<span style="margin-left: 10px; cursor: pointer"
+					class="vote glyphicon glyphicon-thumbs-down"
+					data-topic="{{ topic.id }}" data-action="votedown">
+					<span>{{ topic.votedown }}</span>
+				</span>
+			</form>
+			
+		{% endif %}
 	</div>
 	<div class="row">{{ topic.description }}</div>
 	{% else %}

@@ -11,7 +11,7 @@ class DBSession(object):
         result = []
         model = getattr(models, model)
         for row in self.session.query(model).filter_by(**filters):
-            result.append(row)
+            result.append(dict((col, getattr(row, col)) for col in row.__table__.columns.keys()))
         if len(result):
             return result[0]
         else:
@@ -23,7 +23,7 @@ class DBSession(object):
         if not filters:
             filters = {}
         for row in self.session.query(model).filter_by(**filters):
-            result.append(row)
+            result.append(dict((col, getattr(row, col)) for col in row.__table__.columns.keys()))
         return result
 
     def create_or_update(self, model, fields):

@@ -22,9 +22,9 @@ def login():
         db = DBSession(engine)
         user_details = db.get('User', {'userid' : userid})
         if user_details:
-            if password == user_details.password:
+            if password == user_details['password']:
                 session['logged_in'] = True
-                session['userid'] = user_details.id
+                session['userid'] = user_details['id']
                 session.permanent = False  # use Cookie to store session. (or not!?)
                 flash('You are now logged in.', 'success')
                 return redirect(next_url or url_for('index'))
@@ -47,6 +47,13 @@ def logout():
 def index():
     db = DBSession(engine)
     topics = db.getMulti('Topic')
+    for topic in topics:
+        topic['voteup'] = 0
+        topic['votedown'] = 0
+        votes = db.getMulti('Vote', {'topic' : topic['id']})
+        for vote in votes:
+            topic['voteup'] += vote['voteup']
+            topic['votedown'] += vote['votedown']
     return render_template('index.html', topics=topics)
 
 
@@ -73,7 +80,7 @@ def vote(topic_id, user_vote):
     db = DBSession(engine)
     vote = db.getMulti('Vote', {'topic': topic_id, 'voter': session.get('userid')})
     if len(vote):
-        vote = dict((col, getattr(vote[0], col)) for col in vote[0].__table__.columns.keys())
+        vote = vote[0]
     else:
         vote = {'topic': topic_id, 'voter': session.get('userid')}
     if user_vote == 'voteup':
@@ -84,4 +91,4 @@ def vote(topic_id, user_vote):
         vote['votedown'] = 1
     db.create_or_update('Vote', vote)
     db.save()
-    return ''
+    return redirect(url_for('index'))
