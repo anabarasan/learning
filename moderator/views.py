@@ -92,3 +92,21 @@ def vote(topic_id, user_vote):
     db.create_or_update('Vote', vote)
     db.save()
     return redirect(url_for('index'))
+
+
+@app.route('/user', methods=['GET'])
+@login_required
+def list_users():
+    pass
+
+
+@app.route('/user/new', methods=['GET', 'POST'])
+@login_required
+def create_user():
+    pass
+
+
+@app.route('user/<int:user_id>', methods=['PUT', 'DELETE'])
+@login_required
+def modify_user(user_id):
+    pass
