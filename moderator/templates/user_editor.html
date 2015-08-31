@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Moderator{% endblock %}
+{% block content_title %}Users{% endblock %}
+{% block content %}
+    <div style="text-align: right;">
+        <a href="/user/new">Create User</a>
+    </div>
+    <div id="users" style="margin-left: 15px; margin-right: 15px;">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="userid" class="col-sm-2 control-label">User Id</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="userid" name="userid" type="text" value="{{ user.userid }}" {% if user.userid %}disabled{% endif %}/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="fname" class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="fname" name="fname" type="text" value="{{ user.fname }}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lname" class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="lname" name="lname" type="text" value="{{ user.lname }}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="password" name="password" type="password" value="{{ user.password }}" />
+                </div>
+            </div>
+            <div class="form-group {% if not session.user.isadmin %}hide{% endif %}">
+                <label for="isadmin" class="col-sm-2 control-label">Is Admin</label>
+                <div class="col-sm-10">
+                    <input class="" id="isadmin" name="isadmin" type="checkbox" {% if user.isadmin == 1 %}checked{% endif %} />
+                </div>
+            </div>
+            <input type="hidden" id="_id" name="_id" value="{{ user.id }}" />
+            <div class="form-group">
+                <div class="col-sm-6">
+                    {% if user.id %}
+                    <input class="btn btn-default" id="btnSaveUser" type="button" value="Save"/>
+                    {% else %}
+                        <input class="btn btn-default" id="btnCreateUser" type="button" value="Save"/>
+                    {% endif %}
+                </div>
+                <div class="col-sm-6" style="text-align:right;">
+                    <input class="btn btn-default" id="btnDeleteUser" type="button" value="Delete"/>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

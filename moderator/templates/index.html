@@ -1,35 +1,35 @@
-{% extends "base.html" %} {% block title %}Moderator Topics{% endblock
-%} {% block content_title %}Moderator Topics {% endblock %} {% block
-content %}
-<div style="text-align: right;">
-	<a href="/topic/new">Add New Topic</a>
-</div>
-<div id="topics" style="margin-left: 15px; margin-right: 15px;">
-	{% for topic in topics %}
-	<div class="row"
-		style="margin-top: 10px; border-top: 1px solid #e6e6e6; padding-top: 5px;">
-		<span>{{ topic.topic }}</span>
-		{% if session.logged_in %}
-			<form method="post" action="/vote/{{ topic.id }}/voteup" style="display:inline-block;">
-				<span style="margin-left: 10px; cursor: pointer;"
-					class="vote glyphicon glyphicon-thumbs-up"
-					data-topic="{{ topic.id }}" data-action="voteup">
-					<span>{{ topic.voteup }}</span>
-				</span>
-			</form>
-			<form method="post" action="/vote/{{ topic.id }}/votedown" style="display:inline-block;">
-				<span style="margin-left: 10px; cursor: pointer"
-					class="vote glyphicon glyphicon-thumbs-down"
-					data-topic="{{ topic.id }}" data-action="votedown">
-					<span>{{ topic.votedown }}</span>
-				</span>
-			</form>
-			
-		{% endif %}
-	</div>
-	<div class="row">{{ topic.description }}</div>
-	{% else %}
-	<p>No entries have been created yet</p>
-	{% endfor %}
-</div>
+{% extends "base.html" %}
+{% block title %}Moderator Topics{% endblock %}
+{% block content_title %}Topics{% endblock %}
+{% block content %}
+    <div style="text-align: right;">
+    	<a href="/topic/new">Add New Topic</a>
+    </div>
+    <div id="topics" style="margin-left: 15px; margin-right: 15px;">
+    	{% for topic in topics %}
+    	<div class="row"
+    		style="margin-top: 10px; border-top: 1px solid #e6e6e6; padding-top: 5px;">
+    		<span>{{ topic.topic }}</span>
+    		{% if session.logged_in %}
+    			<form method="post" action="/vote/{{ topic.id }}/voteup" style="display:inline-block;">
+    				<span style="margin-left: 10px; cursor: pointer;"
+    					class="vote glyphicon glyphicon-thumbs-up"
+    					data-topic="{{ topic.id }}" data-action="voteup">
+    					<span>{{ topic.voteup }}</span>
+    				</span>
+    			</form>
+    			<form method="post" action="/vote/{{ topic.id }}/votedown" style="display:inline-block;">
+    				<span style="margin-left: 10px; cursor: pointer"
+    					class="vote glyphicon glyphicon-thumbs-down"
+    					data-topic="{{ topic.id }}" data-action="votedown">
+    					<span>{{ topic.votedown }}</span>
+    				</span>
+    			</form>    			
+    		{% endif %}
+    	</div>
+    	<div class="row">{{ topic.description }}</div>
+    	{% else %}
+    	<p>No entries have been created yet</p>
+    	{% endfor %}
+    </div>
 {% endblock %}

@@ -24,7 +24,7 @@ def login():
         if user_details:
             if password == user_details['password']:
                 session['logged_in'] = True
-                session['userid'] = user_details['id']
+                session['user'] = user_details
                 session.permanent = False  # use Cookie to store session. (or not!?)
                 flash('You are now logged in.', 'success')
                 return redirect(next_url or url_for('index'))
@@ -66,7 +66,7 @@ def newTopic():
             fields = {
                 'topic': request.form.get('topic'),
                 'description': request.form.get('description'),
-                'createdby': session.get('userid')
+                'createdby': session.get('user')['id']
             }
             db.create_or_update('Topic', fields)
             db.save()
@@ -78,11 +78,11 @@ def newTopic():
 @login_required
 def vote(topic_id, user_vote):
     db = DBSession(engine)
-    vote = db.getMulti('Vote', {'topic': topic_id, 'voter': session.get('userid')})
+    vote = db.getMulti('Vote', {'topic': topic_id, 'voter': session.get('user')['id']})
     if len(vote):
         vote = vote[0]
     else:
-        vote = {'topic': topic_id, 'voter': session.get('userid')}
+        vote = {'topic': topic_id, 'voter': session.get('user')['id']}
     if user_vote == 'voteup':
         vote['voteup'] = 1
         vote['votedown'] = 0
@@ -97,16 +97,22 @@ def vote(topic_id, user_vote):
 @app.route('/user', methods=['GET'])
 @login_required
 def list_users():
-    pass
+    db = DBSession(engine)
+    users = db.getMulti('User')
+    return render_template('users.html', users=users)
 
 
 @app.route('/user/new', methods=['GET', 'POST'])
 @login_required
 def create_user():
-    pass
+    if request.method == 'POST':
+        pass
+    return render_template('user_editor.html', user={})
 
 
-@app.route('user/<int:user_id>', methods=['PUT', 'DELETE'])
+@app.route('/user/<int:user_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def modify_user(user_id):
-    pass
+    db = DBSession(engine)
+    user = db.get('User', {'id': user_id})
+    return render_template('user_editor.html', user=user)

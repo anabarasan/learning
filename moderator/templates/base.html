@@ -23,6 +23,9 @@
 		        <div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
 					    {% if session.logged_in %}
+					        {% if session.user.isadmin %}
+					            <li><a href="{{ url_for('list_users') }}">Users</a></li>
+				            {% endif %}
 							<li><a href="{{ url_for('logout') }}">Log out</a></li>
 						{% else %}
 							<li><a href="{{url_for('login') }}">Log In</a></li>

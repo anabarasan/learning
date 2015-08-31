@@ -10,6 +10,7 @@ class User(Base):
     lname = Column(String(255))
     userid = Column(String(10))
     password = Column(String(255))
+    isadmin = Column(Integer)
     topics = relationship('Topic')
     votes = relationship('Vote')
     posts = relationship('Post')

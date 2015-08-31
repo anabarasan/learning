@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Moderator{% endblock %}
+{% block content_title %}Users{% endblock %}
+{% block content %}
+    <div style="text-align: right;">
+        <a href="/user/new">Create User</a>
+    </div>
+    <div id="users" style="margin-left: 15px; margin-right: 15px;">
+        <div class="row" 
+            style="margin-top: 10px; border-top: 1px solid #e6e6e6; padding-top: 5px;">
+            <div class="col-md-3">User Id</div>
+            <div class="col-md-3">First Name</div>
+            <div class="col-md-3">Last Name</div>
+        </div>
+        {% for user in users %}
+            <div class="row"
+                style="margin-top: 10px; border-top: 1px solid #e6e6e6; padding-top: 5px;">
+                <div class="col-md-3">
+                    <a href="/user/{{ user.id }}">{{ user.userid }}</a>
+                </div>
+                <div class="col-md-3">{{ user.fname }}</div>
+                <div class="col-md-3">{{ user.lname }}</div>
+                <div class="col-md-3">&nbsp;</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
