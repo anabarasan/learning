@@ -121,8 +121,11 @@ def create_user():
 @app.route('/user/<int:user_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def modify_user(user_id):
-    if isadmin():
-        db = DBSession(engine)
-        user = db.get('User', {'id': user_id})
-        return render_template('user_editor.html', user=user)
-    return redirect(url_for('index'))
+    db = DBSession(engine)
+    user = db.get('User', {'id': user_id})
+    if request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        if isadmin():
+            pass
+    return render_template('user_editor.html', user=user)
