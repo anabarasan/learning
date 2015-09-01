@@ -13,6 +13,10 @@ def login_required(fn):
     return inner
 
 
+def isadmin():
+    return session.get('user')['isadmin']
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     next_url = request.args.get('next') or request.form.get('next')
@@ -97,22 +101,28 @@ def vote(topic_id, user_vote):
 @app.route('/user', methods=['GET'])
 @login_required
 def list_users():
-    db = DBSession(engine)
-    users = db.getMulti('User')
-    return render_template('users.html', users=users)
+    if isadmin():
+        db = DBSession(engine)
+        users = db.getMulti('User')
+        return render_template('users.html', users=users)
+    return redirect(url_for('index'))
 
 
 @app.route('/user/new', methods=['GET', 'POST'])
 @login_required
 def create_user():
-    if request.method == 'POST':
-        pass
-    return render_template('user_editor.html', user={})
+    if isadmin():
+        if request.method == 'POST':
+            pass
+        return render_template('user_editor.html', user={})
+    return redirect(url_for('index'))
 
 
 @app.route('/user/<int:user_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def modify_user(user_id):
-    db = DBSession(engine)
-    user = db.get('User', {'id': user_id})
-    return render_template('user_editor.html', user=user)
+    if isadmin():
+        db = DBSession(engine)
+        user = db.get('User', {'id': user_id})
+        return render_template('user_editor.html', user=user)
+    return redirect(url_for('index'))
