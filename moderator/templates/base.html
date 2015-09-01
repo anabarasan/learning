@@ -25,6 +25,8 @@
 					    {% if session.logged_in %}
 					        {% if session.user.isadmin %}
 					            <li><a href="{{ url_for('list_users') }}">Users</a></li>
+				            {% else %}
+				            	<li><a href="{{ url_for('modify_user', user_id = session.user.id) }}">Profile</a>
 				            {% endif %}
 							<li><a href="{{ url_for('logout') }}">Log out</a></li>
 						{% else %}
