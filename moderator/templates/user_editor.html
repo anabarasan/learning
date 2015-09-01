@@ -38,13 +38,15 @@
             <div class="form-group">
                 <div class="col-sm-6">
                     {% if user.id %}
-                    <input class="btn btn-default" id="btnSaveUser" type="button" value="Save"/>
+                    	<input class="btn btn-default" id="btnSaveUser" type="button" value="Save"/>
                     {% else %}
                         <input class="btn btn-default" id="btnCreateUser" type="button" value="Save"/>
                     {% endif %}
                 </div>
                 <div class="col-sm-6" style="text-align:right;">
-                    <input class="btn btn-default" id="btnDeleteUser" type="button" value="Delete"/>
+                	{% if user.id and session.user.isadmin %}
+                    	<input class="btn btn-default" id="btnDeleteUser" type="button" value="Delete"/>
+                    {% endif %}
                 </div>
             </div>
         </form>
