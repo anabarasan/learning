@@ -52,12 +52,10 @@ def index():
     db = DBSession(engine)
     topics = db.getMulti('Topic')
     for topic in topics:
-        topic['voteup'] = 0
-        topic['votedown'] = 0
+        topic['likes'] = 0
         votes = db.getMulti('Vote', {'topic': topic['id']})
         for vote in votes:
-            topic['voteup'] += vote['voteup']
-            topic['votedown'] += vote['votedown']
+            topic['likes'] += vote['like']
     return render_template('index.html', topics=topics)
 
 
@@ -78,21 +76,20 @@ def newTopic():
     return render_template('topic_editor.html')
 
 
-@app.route('/vote/<int:topic_id>/<user_vote>', methods=['POST'])
+@app.route('/like/<int:topic_id>', methods=['POST'])
 @login_required
-def vote(topic_id, user_vote):
+def like(topic_id):
     db = DBSession(engine)
     vote = db.getMulti('Vote', {'topic': topic_id, 'voter': session.get('user')['id']})
     if len(vote):
         vote = vote[0]
     else:
         vote = {'topic': topic_id, 'voter': session.get('user')['id']}
-    if user_vote == 'voteup':
-        vote['voteup'] = 1
-        vote['votedown'] = 0
-    elif user_vote == 'votedown':
-        vote['voteup'] = 0
-        vote['votedown'] = 1
+    print vote
+    if vote.get('like', 0) == 1:
+        vote['like'] = 0
+    else:
+        vote['like'] = 1
     db.create_or_update('Vote', vote)
     db.save()
     return redirect(url_for('index'))

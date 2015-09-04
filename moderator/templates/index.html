@@ -19,23 +19,16 @@
 	    		{% if not topic.complete %}
 			    	<div class="row"
 			    		style="margin-top: 10px; border-top: 1px solid #e6e6e6; padding-top: 5px;">
+			    		<span>{{ topic.topic }}</span>
 			    		{% if session.logged_in %}
-			    			<form method="post" action="vote/{{ topic.id }}/voteup" style="display:inline-block;">
+			    			<form method="post" action="like/{{ topic.id }}" style="display:inline-block;">
 			    				<span style="margin-left: 10px; cursor: pointer;"
 			    					class="vote glyphicon glyphicon-thumbs-up"
 			    					data-topic="{{ topic.id }}" data-action="voteup">
-			    					<span>{{ topic.voteup }}</span>
+			    					<span>{{ topic.likes }}</span>
 			    				</span>
 			    			</form>
-			    			<form method="post" action="vote/{{ topic.id }}/votedown" style="display:inline-block;">
-			    				<span style="margin-left: 10px; cursor: pointer"
-			    					class="vote glyphicon glyphicon-thumbs-down"
-			    					data-topic="{{ topic.id }}" data-action="votedown">
-			    					<span>{{ topic.votedown }}</span>
-			    				</span>
-			    			</form>    			
 			    		{% endif %}
-			    		<span>{{ topic.topic }}</span>
 			    	</div>
 			    	<div class="row">{{ topic.description }}</div>
 	    		{% endif %}
