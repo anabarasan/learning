@@ -85,7 +85,6 @@ def like(topic_id):
         vote = vote[0]
     else:
         vote = {'topic': topic_id, 'voter': session.get('user')['id']}
-    print vote
     if vote.get('like', 0) == 1:
         vote['like'] = 0
     else:
