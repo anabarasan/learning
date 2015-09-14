@@ -2,9 +2,11 @@
 {% block title %}Moderator Topics{% endblock %}
 {% block content_title %}Topics{% endblock %}
 {% block content %}
-    <div style="text-align: right;">
-    	<a href="topic/new">Add New Topic</a>
-    </div>
+    {% if session.logged_in %}
+        <div style="text-align: right;">
+    	    <a href="topic/new">Add New Topic</a>
+        </div>
+    {% endif %}
     <ul class="nav nav-tabs">
     	<li class="active">
     		<a data-toggle="tab" href="#topics">Fresh</a>
