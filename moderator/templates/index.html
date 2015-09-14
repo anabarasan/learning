@@ -41,15 +41,13 @@
 	    		{% if topic.complete %}
 			    	<div class="row"
 			    		style="margin-top: 10px; border-top: 1px solid #e6e6e6; padding-top: 5px;">
+			    		<span>{{ topic.topic }}</span>
 			    		{% if session.logged_in %}
-			    			<span style="margin-left: 10px;" class="glyphicon glyphicon-thumbs-up">
-		    					<span>{{ topic.voteup }}</span>
-		    				</span>
-		    				<span style="margin-left: 10px;" class="glyphicon glyphicon-thumbs-down">
-		    					<span>{{ topic.votedown }}</span>
+			    			<span style="margin-left: 10px;"
+			    				class="vote glyphicon glyphicon-thumbs-up">
+			    					<span>{{ topic.likes }}</span>
 		    				</span>    			
 			    		{% endif %}
-			    		<span>{{ topic.topic }}</span>
 			    	</div>
 			    	<div class="row">{{ topic.description }}</div>
 		    	{% endif %}
