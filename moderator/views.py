@@ -2,6 +2,9 @@ from moderator import app, engine
 from flask import render_template, session, redirect, url_for, request, flash
 from DBSession import DBSession
 import functools
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def login_required(fn):
@@ -25,14 +28,17 @@ def login():
         password = request.form.get('password')
         db = DBSession(engine)
         user_details = db.get('User', {'userid': userid})
+        logger.debug('attempting log in for user : %s' % (userid))
         if user_details:
             if password == user_details['password']:
+                logger.debug('login successful for user %s' % (userid))
                 session['logged_in'] = True
                 session['user'] = user_details
                 session.permanent = False  # use Cookie to store session. (or not!?)
                 flash('You are now logged in.', 'success')
                 return redirect(next_url or url_for('index'))
             else:
+                logger.debug('unsuccessful login attempt for user %s' % (userid))
                 flash('Incorrect password.', 'danger')
     else:
         flash('Incorrect UserId or Password.', 'danger')
@@ -42,6 +48,7 @@ def login():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     if request.method == 'POST':
+        logger.debug('logout for user %s' % (session.get('user')['id']))
         session.clear()
         return redirect(url_for('login'))
     return render_template('logout.html')
